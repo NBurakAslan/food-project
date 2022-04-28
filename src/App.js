@@ -4,7 +4,7 @@ import Meals from "./components/Meals/Meals.js";
 import Cart from "./components/Cart/Cart.js";
 import CartProvider from "./store/CartProvider.js";
 function App() {
-  const [cardShow, setCardShow] = useState(true);
+  const [cardShow, setCardShow] = useState(false);
 
   const toogleCardShow = () => {
     setCardShow(!cardShow);
