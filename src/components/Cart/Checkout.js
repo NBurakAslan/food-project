@@ -1,6 +1,15 @@
 import classes from "./Checkout.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+
+const isEmpty = val => val.trim() === "";
+const isFiveChars = val => val.trim().length === 5;
 const Checkout = props => {
+  const [formInputValidty, setFormInputValidty] = useState({
+    name: true,
+    stree: true,
+    city: true,
+    postalCode: true,
+  });
   const nameInputRef = useRef();
   const streetInputRef = useRef();
   const postalInputRef = useRef();
@@ -8,10 +17,36 @@ const Checkout = props => {
 
   const confirmHandler = event => {
     event.preventDefault();
+
     const enteredName = nameInputRef.current.value;
     const enteredStreet = streetInputRef.current.value;
     const enteredPostal = postalInputRef.current.value;
     const enteredCity = cityInputRef.current.value;
+    if (!enteredName) {
+      console.log(enteredName);
+    }
+
+    const enteredNameIsValid = !isEmpty(enteredName);
+    const enteredStreetIsValid = !isEmpty(enteredStreet);
+    const enteredCityIsValid = !isEmpty(enteredCity);
+    const enteredPostalIsValid =
+      !isFiveChars(enteredPostal);
+
+    setFormInputValidty({
+      name: enteredNameIsValid,
+      street: enteredStreetIsValid,
+      postalCode: enteredPostalIsValid,
+      city: enteredCityIsValid,
+    });
+    const formIsValid =
+      enteredNameIsValid &&
+      enteredStreetIsValid &&
+      enteredPostalIsValid &&
+      enteredCityIsValid;
+
+    if (!formIsValid) {
+      return;
+    }
   };
 
   return (
@@ -22,6 +57,9 @@ const Checkout = props => {
       <div className={classes.control}>
         <label htmlFor='name'>Your Name</label>
         <input type='text' id='name' ref={nameInputRef} />
+        {!formInputValidty.name && (
+          <p>plz enter valid name</p>
+        )}
       </div>
       <div className={classes.control}>
         <label htmlFor='street'>Street</label>
